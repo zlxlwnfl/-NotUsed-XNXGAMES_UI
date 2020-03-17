@@ -1,28 +1,36 @@
 <div th:insert="default/header.html" id="header"></div>
 
-	<link type="text/css" th:href="@{/css/write.css}" rel="stylesheet">
+	<link type="text/css" th:href="@{/css/modify.css}" rel="stylesheet">
 	
-    <script src="/js/write.js"></script>
+    <script src="/js/modify.js"></script>
     
-    <input type="hidden" id="writerId" th:value="${#authentication.principal.memberId}" />
-    
-    <form id='boardCriteriaFormGoList' action="/board/list" method='get'>
+    <form id='boardCriteriaFormGoRead' action="/board/read" method='get'>
       <input type="hidden" id="boardType" name="boardType" th:value="${boardType.boardType}" />
       <input type="hidden" id="boardSubType" name="boardSubType" th:value="${boardType.boardSubType}" />
       <input type="hidden" id="currentPageNum" name="currentPageNum" th:value="${paging.currentPageNum}" />
       <input type="hidden" id="amountData" name="amountData" th:value="${paging.amountData}" />
+      <input type="hidden" id="postId" name="postId" th:value="${postId}" />
     </form>
     
-    <div class="write">
+    <input type="hidden" id="writerId" th:value="${post.writerId}" />
+    <input type="hidden" id="postType" th:value="${post.postType}" />
+    
+    <script type="text/javascript" th:inline="javascript">
+	/* <![CDATA[ */
+		gameTagClearArr = /*[[${post.gameTagList}]]*/;
+	/* ]]> */
+	</script>
+    
+    <div class="modify">
       <div class="row">
         <div class="col-md-12">
         
-          <h2 class="write-header"><strong>WRITE</strong></h2>
+          <h2 class="modify-header"><strong>MODIFY</strong></h2>
           
           <div class="title">
-            <label for="labelWriteTitle" class="col-md-1 control-label">제목</label>
+            <label for="labelModifyTitle" class="col-md-1 control-label">제목</label>
             <div class="col-md-11">
-	          <input type="text" id="title" class="form-control" required>
+	          <input type="text" id="title" th:value="${post.title}" class="form-control" required>
 	        </div>
 	      </div>
 	      
@@ -37,22 +45,11 @@
 			</div>
 	      </div>
 	      
-	      <textarea id="content" class="form-control" rows="15" required></textarea>
-          
-          <!-- 
-          <div class="type">
-            <label for="labelWriteTitle" class="col-md-1 control-label">분류</label>
-            <select id="type" name="type" class="col-md-2 form-control" style="width: 100px">
-			  <option>공지</option>
-			  <option>잡담</option>
-		    </select>
-		    <div class="col-md-9"></div>
-		  </div>
-		   -->
+	      <textarea id="content" th:text="${post.content}" class="form-control" rows="15" required></textarea>
 		  
 		  <div class="buttons">
 		    <button type="button" id="register" class="btn btn-success">등록</button>
-		    <button type="button" id="cancle" onclick="goList()" class="btn btn-danger">취소</button>
+		    <button type="button" id="cancle" onclick="goRead()" class="btn btn-warning">취소</button>
 		  </div>
 		  
         </div>

@@ -1,33 +1,24 @@
 var gameTagClearArr = [];
 
-function insertPost() {
+function modifyPost() {
 	var boardType = $("#boardType").val();
 	var boardSubType = $("#boardSubType").val();
+	var postId = $("#postId").val();
 	var title = $('#title').val();
 	var content = $('#content').val();
-	var writerId = $("#writerId").val();
-	var postType;
-	
-	if(boardType == "free" && boardSubType == "free") {
-		postType= "잡담";
-	}
+	var postType = $("#postType").val();
 	
 	$.ajax({
 	    type: 'POST',
-		url: "http://localhost:8000/public/board/post/insertPost",
-		contentType:"application/json",
-		traditional: true,
+		url: "http://localhost:8000/public/board/post/updatePost",
+		contentType :"application/json",
 		data: JSON.stringify({
-			boardType: boardType,
-			boardSubType: boardSubType,
+			postId : postId,
 			title: title,
-			content: content,
-			writerId: writerId,
-			postType: postType,
-			gameTagList: gameTagClearArr
+			content: content
 		}),
 		success: function() {
-			goList();
+			goRead();
 		},
 	    error:function(request, status, error){
 	    	console.log("code:"+request.status+"message:"+request.responseText+"error:"+error); 
@@ -131,13 +122,15 @@ function addGameTagClear() {
 	});
 }
 
-function goList() {
-	var boardCriteriaFormGoList = $("#boardCriteriaFormGoList");
+function goRead() {
+	var boardCriteriaFormGoRead = $("#boardCriteriaFormGoRead");
 
-	boardCriteriaFormGoList.submit();
+	boardCriteriaFormGoRead.submit();
 }
 
 $(document).ready(function () {
+	
+	addGameTagClear();
 	
 	$('#inputGameTag').on("keyup", function() {
 		setTimeout(function() {
@@ -145,8 +138,8 @@ $(document).ready(function () {
 		}, 500)
 	});
 	
-	$("#register").on('click', function () {
-		insertPost();
+	$("#register").on('click', function (event) {
+		modifyPost();
 	});
 	
 });
